@@ -22,13 +22,12 @@ router.beforeEach((to, from, next) => {
     Vue.component(
         name,
         async () => import(`./views/${name}`).catch(() => {
-
-                return import(`./views/not-found`);
-            }
-        )
+            debugger;
+            return import(`./views/not-found`);
+        })
     );
 
-    store.commit('location', name);
+    store.commit('LOCATION', name);
 
     next();
 });

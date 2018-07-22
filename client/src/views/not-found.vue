@@ -8,7 +8,7 @@
     export default {
 
         activated() {
-            this.$store.commit('hide');
+            this.$store.commit('NOT_FOUND');
         }
     }
 </script>
