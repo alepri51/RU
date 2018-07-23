@@ -10,6 +10,7 @@ class API {
         this.token = token;
         this.id = id;
         this.member = void 0;
+        this.payload = {}
     }
 
     async init() {
@@ -37,12 +38,12 @@ class API {
 
         this.token = this.signJWT(member, payload);
 
-        await db.insert('token', payload);
+        //await db.insert('token', payload);
         return this.token;
     }
 
     signJWT(member, payload) {
-        return jwt.sign(payload, member.privateKey, {algorithm: 'RS256', expiresIn: '1m'});
+        return jwt.sign(payload, member.privateKey, {algorithm: 'RS256', expiresIn: '10s'});
     }
 
     async verifyJWT(token) {
@@ -54,15 +55,16 @@ class API {
         }
         catch(err) {
             await this.revokeJWT(payload.jwtid);
+            return {};
         };
 
         return payload;
     }
 
     async revokeJWT(id) {
-        await db.remove('token', {_id: id});
+        //await db.remove('token', {_id: id});
         this.token = void 0;
-        this.payload = void 0;
+        this.payload = {};
     }
 
     default() {
@@ -94,7 +96,7 @@ class Signin extends API {
 
         auth && await this.generateJWT({ member });
 
-        return auth && {auth: { name: member.name, email }};
+        return auth ? {auth: { name: member.name, email }} : { error: 'Пользователь не найден' };
     }
 }
 
@@ -128,7 +130,8 @@ class Signup extends API {
             return { auth: { name, email } };
         }
 
-        return { error: 'user exists'};
+        //this.revokeJWT(this.payload.jwtid);
+        return { error: 'Не корректный адрес почтового ящика или пользователь уже зарегистрирован.', auth: this.payload && this.payload.auth };
     }
 }
 

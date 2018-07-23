@@ -10,23 +10,15 @@ let router = new Router({
     routes: [
         {
             path: '/',
-            redirect: '/about'
+            redirect: '/landing'
         }
     ]
 });
 
 router.beforeEach((to, from, next) => {
     let name = to.path.slice(1);
-    console.log(name);
-
-    Vue.component(
-        name,
-        async () => import(`./views/${name}`).catch(() => {
-            debugger;
-            return import(`./views/not-found`);
-        })
-    );
-
+    
+    store.commit('REGISTER_COMPONENT', name);
     store.commit('LOCATION', name);
 
     next();

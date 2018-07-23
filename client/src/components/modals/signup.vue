@@ -11,7 +11,6 @@
                         <v-text-field v-model="name"
                                         label="Name"
                                         required
-                                        prepend-icon="fas fa-user"
                                         autofocus
                                         color="primary"
                                         :rules="[
@@ -21,7 +20,6 @@
                         <v-text-field v-model="email"
                                         label="Email"
                                         required
-                                        prepend-icon="fas fa-at"
                                         color="primary"
                                         :rules="[
                                             () => !!email || 'This field is required',
@@ -31,7 +29,6 @@
                                         label="Password"
                                         type="password"
                                         required
-                                        prepend-icon="fas fa-key"
                                         color="primary"
                                         :rules="[
                                             () => !!password || 'This field is required',
@@ -43,8 +40,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="secondary" flat @click.native="commit('HIDE_DIALOG', 'signin')">Отменить</v-btn>
-                <v-btn color="primary" flat @click.native="submit">Зарегистрироваться</v-btn>
+                <v-btn color="inactive" flat @click.native="commit('HIDE_DIALOG', 'signup')">Отменить</v-btn>
+                <v-btn dark class="default-action" flat @click.native="submit">Зарегистрироваться</v-btn>
             </v-card-actions>
 
         </v-card>
@@ -57,17 +54,22 @@
         props: ['visible'],
         data: () => {
             return {
-                name: 'Ivan',
-                email: 'ap@aa.ru',
-                password: '123123'
+                name: '',
+                email: '',
+                password: ''
             }
         },
         methods: {
             submit() {
-                //this.$refs.form.validate() && this.$store.actions.signin({ email: this.email, password: this.password });'
-                //debugger;
-                this.$refs.form.validate() && this.execute({ method: 'post', endpoint: 'signup.submit', payload: { name: this.name, email: this.email, password: this.password }});
-                this.commit('HIDE_DIALOG', 'signup');
+                this.$refs.form.validate() ? 
+                    this.execute({ 
+                        method: 'post', 
+                        endpoint: 'signup.submit', 
+                        payload: this.$data, 
+                        callback: (response) =>  !response.data.error && (this.commit('HIDE_DIALOG', 'signup'), this.$router.replace('account')) 
+                    })
+                    :
+                    this.commit('SHOW_SNACKBAR', {text: 'Не корректно введены данные' });
             }
         }
     }    

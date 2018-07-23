@@ -2,7 +2,8 @@
   <v-container text-xs-center mt-2>
     <v-layout>
       <v-flex>
-        <h3 class="display-1 product-title mt-1">ATLANT Club - платформа взаимопомощи</h3>
+        <!-- <h3 class="display-1 product-title mt-1"><span>ATLANT</span><span class="secondary--text">Club</span> - платформа взаимопомощи</h3> -->
+        <h3 class="display-1 product-title mt-1"><span>ВСЕ</span><span class="secondary--text">новостройки</span> - передовая информационная платформа</h3>
         <p class="mt-3">ISLAND Civil's Earthworks platform makes it easy to maintain a database of all your subsurface data.</p>
       </v-flex>
     </v-layout>

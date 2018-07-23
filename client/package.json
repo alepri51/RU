@@ -10,7 +10,6 @@
     "axios": "^0.18.0",
     "prerender-spa-plugin": "^3.2.1",
     "vue": "^2.5.16",
-    "vue-loading-spinner": "^1.0.11",
     "vue-router": "^3.0.1",
     "vuetify": "^1.0.19",
     "vuex": "^3.0.1"

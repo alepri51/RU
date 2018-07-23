@@ -11,7 +11,6 @@
                         <v-text-field v-model="email"
                                         label="Email"
                                         required
-                                        prepend-icon="fas fa-at"
                                         autofocus
                                         color="primary"
                                         :rules="[
@@ -22,7 +21,6 @@
                                         label="Password"
                                         type="password"
                                         required
-                                        prepend-icon="fas fa-key"
                                         color="primary"
                                         :rules="[
                                             () => !!password || 'This field is required',
@@ -33,9 +31,10 @@
                 </v-card-text>
             </v-card-text>
             <v-card-actions>
+                <v-btn color="inactive" flat @click.native="commit('HIDE_DIALOG', 'signin')">Вспомнить пароль</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="secondary" flat @click.native="commit('HIDE_DIALOG', 'signin')">Не входить</v-btn>
-                <v-btn color="primary" flat @click.native="submit">Войти</v-btn>
+                <v-btn color="inactive" flat @click.native="commit('HIDE_DIALOG', 'signin')">Не входить</v-btn>
+                <v-btn dark class="default-action" flat @click.native="submit">Войти</v-btn>
             </v-card-actions>
 
         </v-card>
@@ -56,8 +55,15 @@
             submit() {
                 //this.$refs.form.validate() && this.$store.actions.signin({ email: this.email, password: this.password });'
                 //debugger;
-                this.$refs.form.validate() && this.execute({ method: 'post', endpoint: 'signin.submit', payload: { email: this.email, password: this.password }});
-                this.commit('HIDE_DIALOG', 'signin');
+                this.$refs.form.validate() ? 
+                    this.execute({ 
+                        method: 'post', 
+                        endpoint: 'signin.submit', 
+                        payload: this.$data, 
+                        callback: (response) =>  !response.data.error && (this.commit('HIDE_DIALOG', 'signin'), this.$router.replace('account')) 
+                    })
+                    :
+                    this.commit('SHOW_SNACKBAR', {text: 'Не корректно введены данные' });
             }
         }
     }    

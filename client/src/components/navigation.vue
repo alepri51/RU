@@ -1,32 +1,57 @@
 <template>
-  <v-toolbar app class="white" :scroll-threshold="500" scroll-toolbar-off-screen fixed>
-    <v-icon large class="primary--text hidden-sm-and-down brand-icon">fab fa-galactic-senate</v-icon>
-    <v-spacer class="hidden-sm-and-up brand-spacer"/>
-    <v-toolbar-title class="text-xs-center brand-logo">
+  <v-toolbar app class="white" :scroll-threshold="500" scroll-off-screen fixed>
+    <!-- <v-icon large class="primary--text">fab fa-galactic-senate</v-icon> -->
+    <v-icon large class="primary--text">fas fa-home</v-icon>
+    
+    <!-- <v-toolbar-title class="toolbar-title">
       <span>ATLANT</span>
-      <span class="blue--text text--darken-3 accented-text">Club</span>
+      <span class="secondary--text">Club</span>
+    </v-toolbar-title> -->
+
+    <v-toolbar-title class="toolbar-title">
+        <span>ВСЕ</span>
+        <span class="secondary--text">новостройки</span>
     </v-toolbar-title>
+
+    <v-tabs
+        class="ml-2"
+        v-model="active"
+        slider-color="secondary"
+    >
+        <v-tab
+            to="landing"
+            ripple
+        >
+            LANDING
+      </v-tab>
+<!--       <v-tab
+        v-for="n in 3"
+        :key="n"
+        ripple
+      >
+        Item {{ n }}
+
+      </v-tab> -->
+    </v-tabs>
+
     <v-spacer/>
-<!--     <v-toolbar-items class="hidden-xs-only">
-        <v-btn v-for="item in menu" :key="item.name" @click="call(item.action)" flat class="blue--text text--darken-2 accented-text">{{ item.name }}</v-btn>
-    </v-toolbar-items> -->
 
     <v-toolbar-items v-if="!$store.state.auth">
-        <v-btn flat @click="call('signup.show')" class="blue--text text--darken-2 accented-text">
+        <v-btn flat @click="commit('SHOW_DIALOG', 'signup')" color="primary">
             <v-icon small class="mr-1">fas fa-user-plus</v-icon>Регистрация
         </v-btn>
 
-        <v-btn flat @click="call('signin.show')" class="blue--text text--darken-2 accented-text">
+        <v-btn flat @click="commit('SHOW_DIALOG', 'signin')" color="primary">
             <v-icon small class="mr-1">fas fa-sign-in-alt</v-icon>вход
         </v-btn>
     </v-toolbar-items>
 
     <v-toolbar-items v-if="$store.state.auth">
-        <v-btn flat @click="call('account.show')" class="blue--text text--darken-2 accented-text">
+        <v-btn flat replace to="account"  color="primary" >
             <v-icon small class="mr-1">fas fa-user-circle</v-icon>{{$store.state.auth.name}}
         </v-btn>
 
-        <v-btn flat @click="call('signout.submit')" class="blue--text text--darken-2 accented-text">
+        <v-btn flat @click="commit('SHOW_DIALOG', 'signout')" color="primary">
             Выход<v-icon small class="ml-1">fas fa-sign-out-alt</v-icon>
         </v-btn>
     </v-toolbar-items>
@@ -39,6 +64,7 @@
         props: ['menu'],
         data() {
             return {
+                active: '',
                 actions: []
             }
         },
@@ -52,3 +78,9 @@
  */        }
     }
 </script>
+
+<style scoped>
+    .toolbar-title {
+        overflow: unset;
+    }
+</style>

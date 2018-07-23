@@ -5,7 +5,15 @@
         </div>
 
         <navigation :menu="$store.state.menu"/>
-        <v-content>
+
+        <v-content class="vcontent">
+            <transition name="fade" mode="out-in">
+                <keep-alive>
+                <component :is="$store.state.view"></component>
+                </keep-alive>
+            </transition>
+        </v-content>
+        <!-- <v-content>
             <greeting/>
             
             <mobile-menu :menu="$store.state.menu" class="hidden-sm-and-up"/>
@@ -18,34 +26,60 @@
 
         <signin :visible="dialogs.signin.visible" />
         <signup :visible="dialogs.signup.visible" />
+        <signout :visible="dialogs.signout.visible" /> -->
 
+        <signin :visible="dialogs.signin.visible" />
+        <signup :visible="dialogs.signup.visible" />
+        <signout :visible="dialogs.signout.visible" />
+
+        <v-snackbar
+            @input="commit('HIDE_SNACKBAR')"
+            :value="$store.state.snackbar.visible"
+            :color="$store.state.snackbar.color"
+            :timeout="$store.state.snackbar.timeout"
+            :multi-line="false"
+            :vertical="$store.state.snackbar.vertical"
+            >
+            {{ $store.state.snackbar.text }}
+            <v-btn
+                dark
+                flat
+                @click="commit('HIDE_SNACKBAR')"
+            >
+                {{ $store.state.snackbar.caption }}
+            </v-btn>
+        </v-snackbar>
     </v-app>
 </template>
 
 <script>
-import { RotateSquare2 } from 'vue-loading-spinner';
+    export default {
+        name: 'App',
+        components: {
+            navigation: () => import('./components/navigation'),
+            //landing: () => import('./views/landing'),
+            signin: () => import('./components/modals/signin'),
+            signup: () => import('./components/modals/signup'),
+            signout: () => import('./components/modals/signout')
 
-export default {
-    name: 'App',
-    components: {
-        navigation: () => import('./components/navigation'),
-        greeting: () => import('./components/greeting'),
-        mobileMenu: () => import('./components/mobileMenu'),
-        painpoint: () => import('./components/painpoint'),
-        products: () => import('./components/products'),
-        demo: () => import('./components/demo'),
-        consulting: () => import('./components/consulting'),
-        icFooter: () => import('./components/footer'),
-        signin: () => import('./components/signin'),
-        signup: () => import('./components/signup'),
-        RotateSquare2
-    },
-    data () {
-        return {
+            /* navigation: () => import('./components/navigation'),
+            greeting: () => import('./components/greeting'),
+            mobileMenu: () => import('./components/mobileMenu'),
+            painpoint: () => import('./components/painpoint'),
+            products: () => import('./components/products'),
+            demo: () => import('./components/demo'),
+            consulting: () => import('./components/consulting'),
+            icFooter: () => import('./components/footer'),
+            signin: () => import('./components/signin'),
+            signup: () => import('./components/signup'),
+            signout: () => import('./components/signout') */
+        },
+        data () {
+            return {
 
+            }
         }
     }
-}
 </script>
 
 <style scoped>
