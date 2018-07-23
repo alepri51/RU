@@ -20,8 +20,8 @@
             products: () => import('../components/products'),
             demo: () => import('../components/demo'),
             consulting: () => import('../components/consulting'),
-            icFooter: () => import('../components/footer'),
-/*             signin: () => import('../components/modals/signin'),
+            icFooter: () => import('../components/footer')
+            /* signin: () => import('../components/modals/signin'),
             signup: () => import('../components/modals/signup'),
             signout: () => import('../components/modals/signout') */
         }

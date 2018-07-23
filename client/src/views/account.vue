@@ -1,5 +1,5 @@
 <template>
-	<dashboard :layout="layout" :chachelis="components" :data={} v-resize="onResize" />
+	<dashboard class="dashboard" :layout="layout" :chachelis="components" :data={} v-resize="onResize" />
 </template>
 
 
@@ -77,8 +77,8 @@
 
 </script>
 
-<style scoped>
-	.chacheli-layout .chacheli {
+<style>
+	.dashboard .chacheli {
 		border: 1px solid #ccc!important;
 	}
 </style>

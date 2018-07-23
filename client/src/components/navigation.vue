@@ -10,7 +10,7 @@
 
     <v-toolbar-title class="toolbar-title">
         <span>ВСЕ</span>
-        <span class="secondary--text">новостройки</span>
+        <span class="secondary--text">Новостройки</span>
     </v-toolbar-title>
 
     <v-tabs

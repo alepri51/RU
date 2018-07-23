@@ -23,7 +23,7 @@
     >
       <div class="subheading mb-1 hero-text-sub text-xs-center">Жизнь | Мечта | Счастье</div>
       <p class="white--text hero-text-header mb-2 display-2 text-xs-center">Купи квартиру и стань счастливым!</p>
-      <div class="subheading mb-3 hero-text-sub text-xs-center">Узнайте как <span>ВСЕ</span><span class="secondary--text">новостройки</span> могут помочь осуществить давнюю мечту</div>
+      <div class="subheading mb-3 hero-text-sub text-xs-center">Узнайте как <span>ВСЕ</span><span class="secondary--text">Новостройки</span> могут помочь осуществить давнюю мечту</div>
       <v-btn
         class="mt-3 green darken-1 accented-text" dark @click="commit('SHOW_DIALOG', 'signup')"
       >

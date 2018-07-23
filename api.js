@@ -36,14 +36,14 @@ class API {
             key: member.publicKey
         };
 
-        this.token = this.signJWT(member, payload);
+        this.signJWT(member, payload);
 
         //await db.insert('token', payload);
         return this.token;
     }
 
     signJWT(member, payload) {
-        return jwt.sign(payload, member.privateKey, {algorithm: 'RS256', expiresIn: '10s'});
+        this.token = jwt.sign(payload, member.privateKey, {algorithm: 'RS256', expiresIn: '10s'});
     }
 
     async verifyJWT(token) {
@@ -55,7 +55,7 @@ class API {
         }
         catch(err) {
             await this.revokeJWT(payload.jwtid);
-            return {};
+            return { error: err.message};
         };
 
         return payload;
@@ -78,7 +78,7 @@ class Auth extends API {
     }
 
     default() {
-        return this.payload && this.payload.auth ? {auth: this.payload.auth} : {auth: void 0};
+        return this.payload && this.payload.auth ? {auth: this.payload.auth, error: this.payload.error} : {auth: void 0, error: this.payload.error};
     }
 }
 
@@ -88,9 +88,8 @@ class Signin extends API {
     }
 
     async submit({email, password}) {
-        console.log(email, password);
+        //console.log(email, password);
         
-        let hash = this.hash(`${email}:${password}`);
         let member = await db.findOne('member', {email});
         let auth = member && await bcrypt.compare(`${email}:${password}`, member.hash);
 
