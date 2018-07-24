@@ -15,13 +15,14 @@ router.all(patterns, async (req, res, next) => {
     let {type, id, action} = req.params;
 
     let object = new types[type](req.headers.authorization, id);
-    await object.init();
+    //await object.init();
 
     let executor = action ? object[action].bind(object) : object.default.bind(object);
 
     let result = await executor(req.body || req.query);
 
-    res.json({ token: object.token, ...result } || {}).end();
+    let auth = object.payload && object.payload.auth;
+    res.json({ token: object.token, auth, ...result } || {}).end();
 });
 
 module.exports = router;

@@ -11,6 +11,7 @@ export default new Vuex.Store({
         api: void 0,
         loading: false,
         view: '',
+        referer: void 0,
         dialogs: {
             signin: {
                 visible: false
@@ -24,6 +25,9 @@ export default new Vuex.Store({
         },
         token: void 0,
         auth: void 0,
+        account: {
+            balance: {}
+        },
         snackbar: {
             visible: false,
             color: 'red darken-2',
@@ -34,23 +38,23 @@ export default new Vuex.Store({
             vertical: false
         },
         notFound: false,
-        /* menu: [
+        menu: [
             {
                 icon: '',
-                name: 'Home',
-                action: 'home'
+                name: 'Кабинет',
+                to: 'account'
             },
             {
                 icon: '',
-                name: 'Регистрация',
-                action: 'signup.show'
+                name: 'Магазин',
+                to: 'shop'
             },
             {
                 icon: '',
-                name: 'Вход',
-                action: 'signin.show'
+                name: 'Настройки',
+                to: 'settings'
             }
-        ] */
+        ]
     },
     mutations: {
         INIT(state) {
@@ -67,12 +71,12 @@ export default new Vuex.Store({
             });
 
             let onResponse = (response => {
-                let {token, ...rest} = response.data;
+                let {token, auth, ...rest} = response.data;
+                response.data = rest;
 
-                !rest.auth && (router.replace('landing'));
-                //!rest.auth && (this.commit('REGISTER_COMPONENT', 'landing'), this.commit('LOCATION', 'landing'));
+                !auth && (router.replace('landing'));
 
-                this.commit('SET_AUTH', rest.auth);
+                this.commit('SET_AUTH', auth);
                 this.commit('SET_TOKEN', token);
 
                 if(rest.error) {
@@ -97,14 +101,24 @@ export default new Vuex.Store({
         LOADING(state, value) {
             state.loading = value;
         },
-        REGISTER_COMPONENT(state, name) {
+        REGISTER_VIEW(state, name) {
             Vue.component(
                 name,
                 async () => import(`./views/${name}`).catch(() => {
-                    debugger;
                     return import(`./views/not-found`);
                 })
             );
+        },
+        REGISTER_COMPONENT(state, name) {
+            Vue.component(
+                name,
+                async () => import(`./components/${name}`).catch(() => {
+                    return import(`./components/stub`);
+                })
+            );
+        },
+        REFERER(state, referer) {
+            state.referer = referer;
         },
         LOCATION(state, view) {
             state.view = view;
@@ -133,6 +147,9 @@ export default new Vuex.Store({
         },
         HIDE_SNACKBAR(state) {
             state.snackbar.visible = false;
+        },
+        ACCOUNT(state, data) {
+            state.account.balance = data.balance;
         }
     },
     actions: {
@@ -140,15 +157,20 @@ export default new Vuex.Store({
             //debugger;
             commit('LOADING', true);
 
+            let response;
+
             try {
-                let response = await state.api[method](endpoint, payload);
-                callback && callback(response);
+                response = await state.api[method || 'get'](endpoint, payload);
             }
             catch(err) {
                 console.log('ERROR', err);
             };
 
             commit('LOADING', false);
+
+            if(callback) 
+                callback(response); 
+                else return response;
         }
     }
 });

@@ -1,6 +1,6 @@
 'use strict'
 
-let collections = ['member', 'token'];
+let collections = ['member', 'token', 'transaction', 'product', 'list'];
 
 const cluster = require('cluster');
 const path = require('path');

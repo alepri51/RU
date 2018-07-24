@@ -1,37 +1,39 @@
 <template>
   <v-toolbar app class="white" :scroll-threshold="500" scroll-off-screen fixed>
-    <!-- <v-icon large class="primary--text">fab fa-galactic-senate</v-icon> -->
-    <v-icon large class="primary--text">fas fa-home</v-icon>
+    <v-icon large class="primary--text">fab fa-galactic-senate</v-icon>
+    <!-- <v-icon large class="primary--text">fas fa-home</v-icon> -->
     
-    <!-- <v-toolbar-title class="toolbar-title">
+    <v-toolbar-title class="toolbar-title">
       <span>ATLANT</span>
       <span class="secondary--text">Club</span>
-    </v-toolbar-title> -->
-
-    <v-toolbar-title class="toolbar-title">
-        <span>ВСЕ</span>
-        <span class="secondary--text">Новостройки</span>
     </v-toolbar-title>
 
-    <v-tabs
+    <!-- <v-toolbar-title class="toolbar-title">
+        <span>ВСЕ</span>
+        <span class="secondary--text">Новостройки</span>
+    </v-toolbar-title> -->
+
+    <v-tabs v-if="$store.state.auth"
         class="ml-2"
         v-model="active"
         slider-color="secondary"
     >
-        <v-tab
+        <!-- <v-tab
             to="landing"
             ripple
         >
             LANDING
-      </v-tab>
-<!--       <v-tab
-        v-for="n in 3"
-        :key="n"
-        ripple
-      >
-        Item {{ n }}
-
       </v-tab> -->
+      <v-tab
+        class="primary--text"
+        v-for="item in menu"
+        :key="item.to"
+        ripple
+        :to="item.to"
+      >
+        {{ item.name }}
+
+      </v-tab>
     </v-tabs>
 
     <v-spacer/>
@@ -64,7 +66,7 @@
         props: ['menu'],
         data() {
             return {
-                active: '',
+                active: void 0,
                 actions: []
             }
         },

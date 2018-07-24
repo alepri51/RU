@@ -1,6 +1,6 @@
 <template>
-  <v-parallax :src="require('../assets/dam3.jpg')">
-    <!-- <v-layout
+  <v-parallax :src="require('../assets/demo.jpg')">
+    <v-layout
       column
       align-center
       justify-center
@@ -14,8 +14,8 @@
       >
         Зарегистрироваться
       </v-btn>
-    </v-layout> -->
-    <v-layout
+    </v-layout>
+    <!-- <v-layout
       column
       align-center
       justify-center
@@ -27,17 +27,44 @@
       <v-btn
         class="mt-3 green darken-1 accented-text" dark @click="commit('SHOW_DIALOG', 'signup')"
       >
-        Зарегистрироваться
+        НАЙДИТЕ МНЕ КВАРТИРУ
       </v-btn>
-    </v-layout>
+      <div>ИЛИ</div>
+      <div style="width:300px">
+        <v-text-field
+            dark
+            solo-inverted
+            v-model="search_string"
+            append-icon="fas fa-search"
+            label="Я справлюсь без вас..."
+            hint="адрес, район, округ"
+            @click:append="search"
+            @keyup.enter="search"
+        ></v-text-field>
+
+      </div>
+    </v-layout> -->
   </v-parallax>
 </template>
 
 <script>
     export default {
-    
+        data() {
+            return {
+                search_string: ''
+            }
+        },
+        methods: {
+            search() {
+                console.log(this.search_string);
+                this.search_string = this.search_string || 'Москва';
+                this.commit('SHOW_SNACKBAR', {text: this.search_string});
+                this.search_string = '';
+            }
+        }
     }
 </script>
+
 
 <style>
 /* .hero-text-header {

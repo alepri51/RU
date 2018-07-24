@@ -47,6 +47,15 @@ Vue.mixin({
         },
         dialogs() {
             return this.$store.state.dialogs;
+        },
+        auth() {
+            return this.$store.state.auth || {name: 'Аноним'};
+        },
+        account() {
+            return this.$store.state.account || {}
+        },
+        balance() {
+            return (this.$store.state.account && this.$store.state.account.balance) || {}
         }
     }
 });

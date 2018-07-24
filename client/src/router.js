@@ -18,7 +18,8 @@ let router = new Router({
 router.beforeEach((to, from, next) => {
     let name = to.path.slice(1);
     
-    store.commit('REGISTER_COMPONENT', name);
+    to.query.ref && store.commit('REFERER', to.query.ref);
+    store.commit('REGISTER_VIEW', name);
     store.commit('LOCATION', name);
 
     next();

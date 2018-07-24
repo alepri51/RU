@@ -16,6 +16,7 @@
                                         :rules="[
                                             () => !!email || 'This field is required',
                                         ]"
+                                        @keyup.enter="submit"
                         ></v-text-field>
                         <v-text-field v-model="password"
                                         label="Password"
@@ -25,6 +26,7 @@
                                         :rules="[
                                             () => !!password || 'This field is required',
                                         ]"
+                                        @keyup.enter="submit"
                         ></v-text-field>
                     </v-form>
                     <small>*indicates required field</small>
@@ -47,8 +49,8 @@
         props: ['visible'],
         data: () => {
             return {
-                email: 'ap@aa.ru',
-                password: '123123'
+                email: 'club@atlant.club',
+                password: 'DerGfhjkm100'
             }
         },
         methods: {

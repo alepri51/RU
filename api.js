@@ -10,11 +10,13 @@ class API {
         this.token = token;
         this.id = id;
         this.member = void 0;
-        this.payload = {}
+        this.payload = {};
+
+        this.init();
     }
 
-    async init() {
-        this.payload = this.token && await this.verifyJWT(this.token);
+    init() {
+        this.payload = this.token && this.verifyJWT(this.token);
     }
 
     hash(value) {
@@ -43,10 +45,10 @@ class API {
     }
 
     signJWT(member, payload) {
-        this.token = jwt.sign(payload, member.privateKey, {algorithm: 'RS256', expiresIn: '10s'});
+        this.token = jwt.sign(payload, member.privateKey, {algorithm: 'RS256', expiresIn: '1m'});
     }
 
-    async verifyJWT(token) {
+    verifyJWT(token) {
         let payload = jwt.decode(token);
 
         try {
@@ -54,7 +56,7 @@ class API {
             this.member = payload.member;
         }
         catch(err) {
-            await this.revokeJWT(payload.jwtid);
+            this.revokeJWT(payload.jwtid);
             return { error: err.message};
         };
 
@@ -62,7 +64,6 @@ class API {
     }
 
     async revokeJWT(id) {
-        //await db.remove('token', {_id: id});
         this.token = void 0;
         this.payload = {};
     }
@@ -78,7 +79,19 @@ class Auth extends API {
     }
 
     default() {
-        return this.payload && this.payload.auth ? {auth: this.payload.auth, error: this.payload.error} : {auth: void 0, error: this.payload.error};
+        return this.payload && (this.payload.auth ? {auth: this.payload.auth, error: this.payload.error} : {auth: void 0, error: this.payload.error}) || {};
+    }
+}
+
+class Account extends API {
+    constructor(...args) {
+        super(...args);
+        //use proxy to handle not auth
+    }
+
+    default() {
+        //console.log(this.payload.member);
+        return this.payload ? {balance: {btc: .00001, bonus: 10}} : {error: 'AUTH ERROR'};
     }
 }
 
@@ -95,7 +108,11 @@ class Signin extends API {
 
         auth && await this.generateJWT({ member });
 
-        return auth ? {auth: { name: member.name, email }} : { error: 'Пользователь не найден' };
+        let account = auth && new Account(this.token);
+        let balance = account.default();
+        
+
+        return auth ? {auth: { name: member.name, email }, balance} : { error: 'Пользователь не найден' };
     }
 }
 
@@ -116,14 +133,28 @@ class Signup extends API {
         super(...args);
     }
 
-    async submit({name, email, password}) {
+    async submit({name, email, password, referer}) {
         let member = await db.findOne('member', { email });
 
         if(!member) {
+            let default_list = await db.findOne('list', { default: true });
+            if(!default_list) {
+                let roots = await db.find('member', { group: "root" });
+                roots = roots.map((member, inx) => { 
+                    member.position = inx;
+                    return member._id;
+                });
+                default_list = await db.insert('list', { default: true, members: roots});
+            }
+    
+            referer = referer || default_list.members.slice(-1)[0];
+
             let hash = this.hash(`${email}:${password}`);
             let {privateKey, publicKey} = await crypto.createKeyPair();
 
-            let member = await db.insert('member', { name, email, hash, publicKey, privateKey });
+            let member = await db.insert('member', { group: "member", referer, name, email, hash, publicKey, privateKey });
+            
+
             await this.generateJWT({ member });
     
             return { auth: { name, email } };
@@ -139,7 +170,15 @@ let classes = {
     Signin,
     Signup,
     Signout,
-    Auth
+    Auth,
+    Account
+}
+
+async function createObject(type, ...args) {
+    let object = new type(...args);
+    await object.init();
+
+    return object;
 }
 
 module.exports = Object.entries(classes).reduce((memo, item) => {

@@ -1,12 +1,12 @@
 <template>
 	<div class="chacheli-layout">
 		<div class="chacheli"
-			v-for="c in chachelis"
+			v-for="c in components"
 			v-if="!c.available"
 			:key="c.id"
 			:style="{ top: (c.y * v) + '%', left: (c.x * h) + '%', width: (c.w * h) + '%', height: (c.h * v) + '%'}">
 			<keep-alive>
-				<component :is="c.comp" :meta="c" :data="data[c.id]"/>
+                <component :is="c.comp" :meta="c" :data="data[c.id]"/>
 			</keep-alive>
 		</div>
 	</div>
@@ -41,7 +41,7 @@
 <script>
 export default {
 	name: 'chacheli-layout',
-	props: [ 'layout', 'chachelis', 'data' ],
+	props: [ 'layout', 'components', 'data' ],
 
 	data() {
 		return {
@@ -60,14 +60,19 @@ export default {
 	},
 
 	created() {
-		this.calc()
+        this.calc();
+        //debugger;
+        this.components.forEach(element => {
+            this.commit('REGISTER_COMPONENT', element.comp);
+        });
 	},
 
 	methods: {
 		calc() {
 			this.v = 100 / this.layout.rows
 			this.h = 100 / this.layout.cols
-		}
+        }
+
 	}
 }
 </script>

@@ -15,21 +15,11 @@
 </template>
 
 <script>
-export default {
+    export default {
 
-}
+    }
 </script>
 
 <style>
-.footer-text {
-  font-family: 'Raleway', sans-serif;
-  color: #2c3e50;
-}
-.footer-divider {
-  margin-bottom: 20px;
-  margin-top: -20px;
-}
-.stacking {
-  margin-bottom: -10px;
-}
+
 </style>

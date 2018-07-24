@@ -16,6 +16,7 @@
                                         :rules="[
                                             () => !!name || 'This field is required',
                                         ]"
+                                        @keyup.enter="submit"
                         ></v-text-field>
                         <v-text-field v-model="email"
                                         label="Email"
@@ -24,6 +25,7 @@
                                         :rules="[
                                             () => !!email || 'This field is required',
                                         ]"
+                                        @keyup.enter="submit"
                         ></v-text-field>
                         <v-text-field v-model="password"
                                         label="Password"
@@ -33,6 +35,7 @@
                                         :rules="[
                                             () => !!password || 'This field is required',
                                         ]"
+                                        @keyup.enter="submit"
                         ></v-text-field>
                     </v-form>
                     <small>*indicates required field</small>
@@ -61,6 +64,8 @@
         },
         methods: {
             submit() {
+                this.$data.referer = this.$store.state.referer;
+
                 this.$refs.form.validate() ? 
                     this.execute({ 
                         method: 'post', 

@@ -17,14 +17,19 @@
             greeting: () => import('../components/greeting'),
             mobileMenu: () => import('../components/mobileMenu'),
             painpoint: () => import('../components/painpoint'),
-            products: () => import('../components/products'),
+            //products: () => import('../components/products'),
             demo: () => import('../components/demo'),
             consulting: () => import('../components/consulting'),
             icFooter: () => import('../components/footer')
             /* signin: () => import('../components/modals/signin'),
             signup: () => import('../components/modals/signup'),
             signout: () => import('../components/modals/signout') */
+        },
+        created() {
+            //debugger;
+            this.commit('REGISTER_COMPONENT', 'products');
         }
+
     }
 </script>
 
