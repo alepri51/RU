@@ -1,7 +1,6 @@
 <template>
     <div>
         <greeting/>
-            
         <mobile-menu :menu="$store.state.menu" class="hidden-sm-and-up"/>
         <painpoint id="earthworks"/>
         <products/>
