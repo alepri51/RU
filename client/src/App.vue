@@ -32,6 +32,8 @@
         <signup :visible="dialogs.signup.visible" />
         <signout :visible="dialogs.signout.visible" />
 
+        <stepper :visible="dialogs.stepper.visible" />
+
         <v-snackbar
             @input="commit('HIDE_SNACKBAR')"
             :value="$store.state.snackbar.visible"
@@ -60,7 +62,8 @@
             //landing: () => import('./views/landing'),
             signin: () => import('./components/modals/signin'),
             signup: () => import('./components/modals/signup'),
-            signout: () => import('./components/modals/signout')
+            signout: () => import('./components/modals/signout'),
+            stepper: () => import('./components/modals/stepper')
 
             /* navigation: () => import('./components/navigation'),
             greeting: () => import('./components/greeting'),

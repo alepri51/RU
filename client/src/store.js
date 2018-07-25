@@ -21,6 +21,9 @@ export default new Vuex.Store({
             },
             signout: {
                 visible: false
+            },
+            stepper: {
+                visible: false
             }
         },
         token: void 0,

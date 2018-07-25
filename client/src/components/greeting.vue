@@ -1,6 +1,6 @@
 <template>
-  <v-parallax :src="require('../assets/demo.jpg')">
-    <v-layout
+  <v-parallax :src="require('../assets/150289557589.jpg')">
+    <!-- <v-layout
       column
       align-center
       justify-center
@@ -14,8 +14,8 @@
       >
         Зарегистрироваться
       </v-btn>
-    </v-layout>
-    <!-- <v-layout
+    </v-layout> -->
+    <v-layout
       column
       align-center
       justify-center
@@ -25,12 +25,17 @@
       <p class="white--text hero-text-header mb-2 display-2 text-xs-center">Купи квартиру и стань счастливым!</p>
       <div class="subheading mb-3 hero-text-sub text-xs-center">Узнайте как <span>ВСЕ</span><span class="secondary--text">Новостройки</span> могут помочь осуществить давнюю мечту</div>
       <v-btn
-        class="mt-3 green darken-1 accented-text" dark @click="commit('SHOW_DIALOG', 'signup')"
+        class="mt-3 green darken-1 accented-text" dark @click="commit('SHOW_DIALOG', 'stepper')"
       >
         НАЙДИТЕ МНЕ КВАРТИРУ
       </v-btn>
       <div>ИЛИ</div>
-      <div style="width:300px">
+      <v-btn
+        class="mt-1 green darken-1 accented-text" dark @click="false"
+      >
+        Я СПРАВЛЮСЬ БЕЗ ВАС
+      </v-btn>
+      <!-- <div style="width:300px">
         <v-text-field
             dark
             solo-inverted
@@ -40,10 +45,9 @@
             hint="адрес, район, округ"
             @click:append="search"
             @keyup.enter="search"
-        ></v-text-field>
+        ></v-text-field> -->
 
-      </div>
-    </v-layout> -->
+    </v-layout>
   </v-parallax>
 </template>
 
